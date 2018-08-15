@@ -6,6 +6,7 @@ export const Types = {
 
 const initialState = {
   data: [],
+  pages: 0,
   loading: false,
   error: null,
 };
@@ -21,6 +22,7 @@ const planets = (state = initialState, action) => {
       return {
         ...state,
         data: action.payload.data,
+        pages: action.payload.pages,
         loading: false,
         error: null,
       };
@@ -28,6 +30,7 @@ const planets = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        pages: 0,
         error: action.payload.error,
       };
     default:
@@ -38,13 +41,15 @@ const planets = (state = initialState, action) => {
 export default planets;
 
 export const Creators = {
-  getPlanetsRequest: () => ({
+  getPlanetsRequest: page => ({
     type: Types.GET_REQUEST,
+    page,
   }),
-  getPlanetsSuccess: data => ({
+  getPlanetsSuccess: (data, pages) => ({
     type: Types.GET_SUCCESS,
     payload: {
       data,
+      pages,
     },
   }),
   getPlanetsFailure: error => ({

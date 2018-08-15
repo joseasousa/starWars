@@ -4,27 +4,29 @@ import { Redirect } from 'react-router-dom';
 import { Creators as VehiclesActions } from '../../store/ducks/vehicles';
 import Header from '../../components/Header';
 
-class Vehicles extends Component {
+import Vehicles from './Vehicles';
+
+class Vehicle extends Component {
   componentDidMount() {
-    this.props.vehiclesRequest();
+    this.props.vehiclesRequest(1);
   }
 
   render() {
-    if (!this.props.auth.isAuth) {
+    const {
+      vehicles, vehiclesRequest, isFetching, pages, auth,
+    } = this.props;
+
+    if (!auth.isAuth) {
       return <Redirect to="/login" />;
     }
+
     return (
       <div>
         <Header />
-
-        {this.props.isFetching ? (
+        {vehicles.length < 1 ? (
           <h1>...</h1>
         ) : (
-          <ul>
-            {this.props.vehicles.map(v => (
-              <li key={v.name}>{v.name}</li>
-            ))}
-          </ul>
+          <Vehicles rows={vehicles} totalPages={pages} request={vehiclesRequest} />
         )}
       </div>
     );
@@ -33,16 +35,17 @@ class Vehicles extends Component {
 
 const mapStateToProps = state => ({
   vehicles: state.vehicles.data,
+  pages: state.vehicles.pages,
   isFetching: state.vehicles.isFetching,
   error: state.vehicles.error,
   auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
-  vehiclesRequest: () => dispatch(VehiclesActions.getVehiclesRequest()),
+  vehiclesRequest: page => dispatch(VehiclesActions.getVehiclesRequest(page)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Vehicles);
+)(Vehicle);

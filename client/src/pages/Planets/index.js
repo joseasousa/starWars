@@ -4,26 +4,29 @@ import { Redirect } from 'react-router-dom';
 import { Creators as PlanetsActions } from '../../store/ducks/planets';
 import Header from '../../components/Header';
 
-class Planets extends Component {
+import Planets from './Planets';
+
+class Planet extends Component {
   componentDidMount() {
-    this.props.PlanetsRequest();
+    this.props.PlanetsRequest(1);
   }
 
   render() {
-    if (!this.props.auth.isAuth) {
+    const {
+      planets, PlanetsRequest, isFetching, pages, auth,
+    } = this.props;
+
+    if (!auth.isAuth) {
       return <Redirect to="/login" />;
     }
+
     return (
       <div>
         <Header />
-        {this.props.isFetching ? (
+        {planets.length < 1 ? (
           <h1>...</h1>
         ) : (
-          <ul>
-            {this.props.planets.map(f => (
-              <li key={f.name}>{f.name}</li>
-            ))}
-          </ul>
+          <Planets rows={planets} totalPages={pages} request={PlanetsRequest} />
         )}
       </div>
     );
@@ -32,16 +35,17 @@ class Planets extends Component {
 
 const mapStateToProps = state => ({
   planets: state.planets.data,
+  pages: state.planets.pages,
   isFetching: state.planets.isFetching,
   error: state.planets.error,
   auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
-  PlanetsRequest: () => dispatch(PlanetsActions.getPlanetsRequest()),
+  PlanetsRequest: page => dispatch(PlanetsActions.getPlanetsRequest(page)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Planets);
+)(Planet);

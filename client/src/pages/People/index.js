@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
+
 import { Creators as PeopleActions } from '../../store/ducks/people';
 import Header from '../../components/Header';
+import Peoples from './Peoples';
 
 class People extends Component {
   componentDidMount() {
-    this.props.PeopleRequest();
+    this.props.PeopleRequest(1);
   }
 
   render() {
-    if (!this.props.auth.isAuth) {
+    const {
+      peoples, PeopleRequest, isFetching, pages, auth,
+    } = this.props;
+
+    if (!auth.isAuth) {
       return <Redirect to="/login" />;
     }
+
     return (
       <div>
         <Header />
-
-        {this.props.isFetching ? (
-          <h1>...</h1>
-        ) : (
-          <ul>
-            {this.props.people.map(p => (
-              <li key={p.name}>{p.name}</li>
-            ))}
-          </ul>
-        )}
+        {peoples.length < 1
+          ? <h1>...</h1>
+          : <Peoples peoples={peoples} totalPages={pages} request={PeopleRequest} />
+        }
       </div>
     );
   }
@@ -33,13 +35,14 @@ class People extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  people: state.people.data,
+  pages: state.people.pages,
+  peoples: state.people.data,
   isFetching: state.people.isFetching,
   error: state.people.error,
 });
 
 const mapDispatchToProps = dispatch => ({
-  PeopleRequest: () => dispatch(PeopleActions.getPeoplesRequest()),
+  PeopleRequest: page => dispatch(PeopleActions.getPeoplesRequest(page)),
 });
 
 export default connect(

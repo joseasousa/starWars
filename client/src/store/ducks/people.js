@@ -6,6 +6,7 @@ export const Types = {
 
 const initialState = {
   data: [],
+  pages: 0,
   loading: false,
   error: null,
 };
@@ -21,6 +22,7 @@ const Peoples = (state = initialState, action) => {
       return {
         ...state,
         data: action.payload.data,
+        pages: action.payload.pages,
         loading: false,
         error: null,
       };
@@ -29,6 +31,7 @@ const Peoples = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+        pages: 0,
       };
     default:
       return state;
@@ -38,13 +41,15 @@ const Peoples = (state = initialState, action) => {
 export default Peoples;
 
 export const Creators = {
-  getPeoplesRequest: () => ({
+  getPeoplesRequest: page => ({
     type: Types.GET_REQUEST,
+    page,
   }),
-  getPeoplesSuccess: data => ({
+  getPeoplesSuccess: (data, pages) => ({
     type: Types.GET_SUCCESS,
     payload: {
       data,
+      pages,
     },
   }),
   getPeoplesFailure: error => ({
