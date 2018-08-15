@@ -22,11 +22,9 @@
     "react-redux-datatable": "^2.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
-    "react-table": "^6.8.6",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
-    "redux-saga": "^0.16.0",
-    "sematable": "^1.9.2"
+    "redux-saga": "^0.16.0"
   },
   "devDependencies": {
     "enzyme": "^3.4.1",
