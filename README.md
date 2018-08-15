@@ -4,10 +4,10 @@
 React / Redux .
 ### Technology
 * [React](https://reactjs.org/)
+* [Redux](https://redux.js.org/)
 * [Redux-saga](https://redux-saga.js.org/)
 * [Ducks Patern](https://github.com/erikras/ducks-modular-redux)
 * [Material-ui](https://material-ui.com/)
-* [Redux](https://redux.js.org/)
 * [JWT](https://jwt.io/)
 
 ## Server
