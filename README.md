@@ -1,7 +1,7 @@
 # starWars
 
 
-React / Redux project for React Nanodegree from Udacity.
+React / Redux .
 
 ## Server
 
